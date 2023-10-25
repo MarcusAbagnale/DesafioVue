@@ -1,0 +1,14 @@
+#img {
+    width: 50px;
+}
+.table-container {
+    float: left;
+}
+
+.form-container {
+    background-color: blueviolet;
+}
+
+body, td {
+    font-size: 10px;
+}
