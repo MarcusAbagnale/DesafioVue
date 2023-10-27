@@ -14,7 +14,7 @@ Prettier: Um formatador de código opinativo que força um estilo consistente, f
 TypeScript: Um superconjunto tipado de JavaScript que compila para JavaScript simples.
 Lodash: Uma biblioteca JavaScript moderna que oferece utilitários modulares.
 Como instalar
-Clone o repositório para sua máquina local usando https://github.com/SEU_USUARIO/desafio-f.git
+Clone o repositório para sua máquina local usando https://github.com/MarcusAbagnale/DesafioVue
 Mude para o diretório do projeto: cd desafio-f
 Instale as dependências do projeto: npm install
 Inicie o servidor de desenvolvimento: npm run serve
