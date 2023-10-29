@@ -1,7 +1,4 @@
-FROM node:16
-
-ENV APP_PORT=3000 \
-    APP_HOST=0.0.0.0
+FROM node:14
 
 WORKDIR /app
 
@@ -13,6 +10,6 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE $APP_PORT
+EXPOSE 8080
 
-CMD ["npm", "run", "start"]
+CMD ["npx", "http-server", "dist"]

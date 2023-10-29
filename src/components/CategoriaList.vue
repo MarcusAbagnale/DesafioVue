@@ -1,7 +1,7 @@
 <template>
-  <div class="p-5 col-8 mx-auto ">
+  <div class="p-5 col-8 mx-auto  container">
     <h2>Lista de Categorias</h2>
-    <ul class="list-group d-flex  justify-content-center">
+    <ul class="list-group d-flex   justify-content-center">
       <li class="list-group-item" v-for="categoria in categorias" :key="categoria.id">
         {{ categoria.nome }}
         <button class="btn btn-primary" @click="editarCategoria(categoria)">Editar</button>
@@ -19,6 +19,12 @@
       <button class="btn btn-primary" type="submit">Salvar Edição</button>
     </form>
 
+    <div v-if="isLoading" class="d-flex justify-content-center align-items-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
     <p v-if="mensagemSucesso" class="success">{{ mensagemSucesso }}</p>
     <p v-if="mensagemErro" class="error">{{ mensagemErro }}</p>
   </div>
@@ -28,14 +34,12 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-
-axios.defaults.headers.common['Authorization'] = `Bearer 3|FborLPRnq9LLB5lbH1xJtE5UW7zTunIRwkaLEbal0d1da617`;
-
 const categorias = ref<Categoria[]>([]);
 const novaCategoria = ref<string>('');
 const categoriaEditando = ref<Categoria | null>(null);
 const mensagemSucesso = ref<string>('');
 const mensagemErro = ref<string>('');
+const isLoading = ref(false);
 
 interface Categoria {
   id: number;
@@ -43,11 +47,14 @@ interface Categoria {
 }
 
 const carregarCategorias = async () => {
+  isLoading.value = true;
   try {
     const response = await axios.get<{ categorias: Categoria[] }>('http://127.0.0.1:8000/api/categorias');
     categorias.value = response.data.categorias;
   } catch (error) {
     console.error(error);
+  } finally {
+    isLoading.value = false; 
   }
 };
 
@@ -99,6 +106,8 @@ const excluirCategoria = async (categoriaId: number) => {
     mensagemSucesso.value = '';
   }
 };
+
+
 
 onMounted(() => {
   carregarCategorias();

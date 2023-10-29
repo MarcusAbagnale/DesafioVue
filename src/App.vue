@@ -1,94 +1,58 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
-
-    <div class="wrapper m-5">
+    <div class="container text-center">
       <HelloWorld msg="Bem vindo!" />
+      <div class="container">
+        <input
+          type="text"
+          class="form-group form-control my-3"
+          id="tokenInput"
+          placeholder="Insira o token aqui"
+          v-model="token"
+        />
+        <button class="btn btn-primary" @click="setToken">Definir Token</button>
+      </div>
 
-      <nav class="navbar navbar-expand-lg  ">
-        <div class="container">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <RouterLink to="/categorias" class="nav-link">Categorias</RouterLink>
-            </li>
-            <li class="nav-item">
-              <RouterLink to="/produtos" class="nav-link">Produtos</RouterLink>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
+      <div class="container m-5 text-center" v-if="tokenDefined">
+        <nav class="navbar navbar-expand-lg bg-success-subtle">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">Menu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <RouterLink to="/categorias" class="nav-link btn-secondary m-2 rounded">Categorias</RouterLink>
+                <RouterLink to="/produtos" class="nav-link btn-secondary m-2 rounded">Produtos</RouterLink>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <RouterView />
+  <RouterView v-if="tokenDefined" />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script lang="ts">
+import axios from 'axios';
+import { defineComponent } from 'vue';
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
+export default defineComponent({
+  data() {
+    return {
+      token: '',
+      tokenDefined: false, 
+    };
+  },
+  methods: {
+    setToken(): void {
+      const token: string = this.token;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      this.tokenDefined = true;
+    },
+  },
+});
+</script>
